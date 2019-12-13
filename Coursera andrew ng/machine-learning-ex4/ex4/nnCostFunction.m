@@ -123,7 +123,10 @@ end
 
 j2=(lambda*(j2_1+j2_2))/(2*m);
 
-J=j1+j2;
+
+regularator = (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2))) * (lambda/(2*m));
+
+J=j1+regularator;
 
 
   
@@ -178,6 +181,16 @@ capital_delta_2=capital_delta_2/m;
 %disp(size(Theta1));
 %disp(size(Theta2));
 %disp(size(capital_delta_2)); 10   26
-%disp(size(capital_delta_1)); %401   1
+%disp(size(capital_delta_1)); %25 401 
+
+% ####################################
+% apply regularization
+Theta1_grad=(lambda/m) * [zeros(size(Theta1, 1), 1) Theta1(:,2:end)];
+Theta2_grad= (lambda/m) * [zeros(size(Theta2, 1), 1) Theta2(:,2:end)];
+
+capital_delta_1+=Theta1_grad;
+capital_delta_2+=Theta2_grad;
+
+
 grad=[capital_delta_1(:);capital_delta_2(:)];
 end
